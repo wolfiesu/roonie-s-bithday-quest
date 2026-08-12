@@ -60,20 +60,37 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (audioRef.current) audioRef.current.volume = volume;
   }, [volume, index]);
 
-  // Sync HTMLAudioElement playback with React 'playing' and 'index' state
+  // Reload audio source when track index changes
+  useEffect(() => {
+    const el = audioRef.current;
+    if (!el) return;
+    el.load();
+    if (playing) {
+      el.play().catch((err) => {
+        console.warn("Playback failed on track change:", err);
+        setPlaying(false);
+      });
+    }
+  }, [index]);
+
+  // Handle play/pause state changes
   useEffect(() => {
     const el = audioRef.current;
     if (!el) return;
 
     if (playing) {
-      el.play().catch((err) => {
-        console.warn("Playback prevented or failed:", err);
-        setPlaying(false);
-      });
+      if (el.paused) {
+        el.play().catch((err) => {
+          console.warn("Playback prevented:", err);
+          setPlaying(false);
+        });
+      }
     } else {
-      el.pause();
+      if (!el.paused) {
+        el.pause();
+      }
     }
-  }, [playing, index]);
+  }, [playing]);
 
   // Start music on the first page interaction anywhere
   useEffect(() => {
