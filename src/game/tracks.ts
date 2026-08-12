@@ -13,7 +13,7 @@ export const TRACKS: Track[] = [
   {
     title: "Ladygirl",
     artist: "Malcolm Todd",
-    src: "/music/05 - Malcolm Todd - Ladygirl.mp3",
+    src: "/music/ladygirl.mp3",
   },
   {
     title: "Maggots For Brains",
@@ -28,7 +28,7 @@ export const TRACKS: Track[] = [
   {
     title: "I Really Want to Stay At Your House",
     artist: "Rosa Walton",
-    src: "/music/05 - Rosa Walton - I Really Want to Stay ...mp3",
+    src: "/music/05 - Rosa Walton - I Really Want to Stay at Your House.mp3",
   },
   {
     title: "Lights",
