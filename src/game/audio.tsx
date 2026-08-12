@@ -55,17 +55,30 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   const track = order[index]!;
 
+  // Handle volume changes
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = volume;
   }, [volume, index]);
 
-  // start music on the first interaction anywhere
+  // Sync HTMLAudioElement playback with React 'playing' and 'index' state
+  useEffect(() => {
+    const el = audioRef.current;
+    if (!el) return;
+
+    if (playing) {
+      el.play().catch((err) => {
+        console.warn("Playback prevented or failed:", err);
+        setPlaying(false);
+      });
+    } else {
+      el.pause();
+    }
+  }, [playing, index]);
+
+  // Start music on the first page interaction anywhere
   useEffect(() => {
     const start = () => {
-      audioRef.current
-        ?.play()
-        .then(() => setPlaying(true))
-        .catch(() => undefined);
+      setPlaying(true);
     };
     window.addEventListener("pointerdown", start, { once: true });
     window.addEventListener("keydown", start, { once: true });
@@ -78,12 +91,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const playAt = useCallback((i: number) => {
     setIndex(i);
     setProgress(0);
-    requestAnimationFrame(() => {
-      audioRef.current
-        ?.play()
-        .then(() => setPlaying(true))
-        .catch(() => undefined);
-    });
+    setPlaying(true);
   }, []);
 
   const go = useCallback(
@@ -92,16 +100,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   );
 
   const toggle = useCallback(() => {
-    const el = audioRef.current;
-    if (!el) return;
-    if (el.paused) {
-      el.play()
-        .then(() => setPlaying(true))
-        .catch(() => undefined);
-    } else {
-      el.pause();
-      setPlaying(false);
-    }
+    setPlaying((p) => !p);
   }, []);
 
   const move = useCallback(
@@ -176,7 +175,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           setProgress(el.duration ? (el.currentTime / el.duration) * 100 : 0);
         }}
         onEnded={() => go(1)}
-        onError={() => setPlaying(false)}
+        onError={(e) => {
+          console.error("Audio element error:", e);
+          setPlaying(false);
+        }}
       />
       {children}
     </AudioCtx.Provider>
