@@ -1,0 +1,324 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-sky: var(--sky);
+  --color-sky-deep: var(--sky-deep);
+  --color-pink: var(--pink);
+  --color-pink-deep: var(--pink-deep);
+  --color-pink-soft: var(--pink-soft);
+  --color-cream: var(--cream);
+  --color-gold: var(--gold);
+  --color-wood: var(--wood);
+  --color-wood-dark: var(--wood-dark);
+  --color-grass: var(--grass);
+  --color-grass-dark: var(--grass-dark);
+  --color-lilac: var(--lilac);
+  --color-ink: var(--ink);
+  --font-pixel: "Press Start 2P", monospace;
+  --font-body: "Pixelify Sans", "Silkscreen", monospace;
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* pastel palette */
+  --sky: oklch(0.9 0.055 230);
+  --sky-deep: oklch(0.83 0.075 232);
+  --pink: oklch(0.86 0.085 5);
+  --pink-deep: oklch(0.75 0.14 3);
+  --pink-soft: oklch(0.94 0.04 5);
+  --cream: oklch(0.96 0.055 95);
+  --gold: oklch(0.87 0.13 90);
+  --wood: oklch(0.79 0.075 65);
+  --wood-dark: oklch(0.62 0.085 55);
+  --grass: oklch(0.86 0.11 145);
+  --grass-dark: oklch(0.72 0.13 148);
+  --lilac: oklch(0.9 0.05 305);
+  --ink: oklch(0.22 0.02 300);
+
+  --background: var(--sky);
+  --foreground: var(--ink);
+  --card: oklch(0.99 0.008 90);
+  --card-foreground: var(--ink);
+  --popover: oklch(0.99 0.008 90);
+  --popover-foreground: var(--ink);
+  --primary: var(--pink-deep);
+  --primary-foreground: oklch(0.99 0.005 90);
+  --secondary: var(--lilac);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.95 0.015 300);
+  --muted-foreground: oklch(0.5 0.03 300);
+  --accent: var(--gold);
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.63 0.2 25);
+  --destructive-foreground: oklch(0.99 0.005 90);
+  --border: var(--ink);
+  --input: var(--ink);
+  --ring: var(--pink-deep);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body {
+    background-color: var(--color-sky);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  img {
+    image-rendering: pixelated;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+
+  button {
+    touch-action: none;
+  }
+
+}
+
+/* ---------- pixel utilities ---------- */
+
+@utility pixel-box {
+  border: 3px solid var(--color-ink);
+  box-shadow:
+    0 4px 0 0 var(--color-ink),
+    inset 0 -4px 0 0 color-mix(in oklab, var(--color-ink) 12%, transparent);
+}
+
+@utility pixel-btn {
+  position: relative;
+  border: 3px solid var(--color-ink);
+  box-shadow: 0 5px 0 0 var(--color-ink);
+  transition:
+    transform 0.08s steps(2),
+    box-shadow 0.08s steps(2);
+  font-family: var(--font-pixel);
+  letter-spacing: 0.02em;
+
+  &:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 0 var(--color-ink);
+  }
+}
+
+@utility pixel-text {
+  font-family: var(--font-pixel);
+  line-height: 1.6;
+}
+
+@utility title-shadow {
+  text-shadow:
+    3px 0 0 var(--color-ink),
+    -3px 0 0 var(--color-ink),
+    0 3px 0 var(--color-ink),
+    0 -3px 0 var(--color-ink),
+    3px 3px 0 var(--color-ink),
+    -3px 3px 0 var(--color-ink),
+    3px -3px 0 var(--color-ink),
+    -3px -3px 0 var(--color-ink),
+    0 8px 0 color-mix(in oklab, var(--color-ink) 35%, transparent);
+}
+
+@utility scanlines {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-ink) 6%, transparent) 0 1px,
+      transparent 1px 3px
+    );
+    opacity: 0.35;
+  }
+}
+
+/* ---------- animations ---------- */
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-20vw);
+  }
+  to {
+    transform: translateX(120vw);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) rotate(540deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes swirl {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@utility anim-bob {
+  animation: bob 2.2s steps(6, end) infinite;
+}
+
+@utility anim-pop {
+  animation: pop-in 0.32s steps(5, end) both;
+}
+
+@utility anim-sparkle {
+  animation: sparkle 1.4s steps(4, end) infinite;
+}
+
+@keyframes spin-cd {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pixel-rise {
+  0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(-50%, -46px) scale(1.1); opacity: 0; }
+}
+
+@utility anim-spin {
+  animation: spin-cd 3.2s steps(12, end) infinite;
+}
+
+@utility anim-rise {
+  animation: pixel-rise 0.9s steps(8, end) forwards;
+}
+
+@keyframes tilt-pour {
+  0% { transform: rotate(0deg) translate(0, 0); }
+  35% { transform: rotate(-58deg) translate(-12px, -8px); }
+  100% { transform: rotate(-58deg) translate(-12px, -8px); }
+}
+
+@utility anim-pour {
+  animation: tilt-pour 0.9s steps(6, end) forwards;
+}
+
+@keyframes settle-drop {
+  0% { transform: translate(-50%, -78%) scale(1.22); }
+  60% { transform: translate(-50%, -44%) scale(0.92); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@utility anim-settle {
+  animation: settle-drop 0.3s steps(5, end) both;
+}
+
+@keyframes snap-in {
+  0% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(0.88); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+@utility anim-snap {
+  animation: snap-in 0.34s steps(5, end) both;
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+
+@utility anim-sway {
+  animation: sway 3s steps(8, end) infinite;
+}
